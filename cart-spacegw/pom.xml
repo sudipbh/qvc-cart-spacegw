@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.qvc.dcp.integration.services</groupId>
+    <artifactId>cart-spacegw</artifactId>
+    <version>1.0.0-RELEASE</version>
+    <packaging>pom</packaging>
+    <name>cart-spacegw</name>
+
+    <url>http://maven.apache.org</url>
+
+    <modules>
+        <module>cart-space</module>
+        <module>cart-space-wan-gateway</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>org.openspaces</id>
+            <url>http://maven-repository.openspaces.org</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>org.openspaces</id>
+            <url>http://maven-repository.openspaces.org</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <gs.version>12.1.1</gs.version>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>us</id>
+            <properties>
+                <geo>us</geo>
+                <GEO>US</GEO>
+            </properties>
+        </profile>
+        <profile>
+            <id>uk</id>
+            <properties>
+                <geo>uk</geo>
+                <GEO>UK</GEO>
+            </properties>
+        </profile>
+        <profile>
+            <id>de</id>
+            <properties>
+                <geo>de</geo>
+                <GEO>DE</GEO>
+            </properties>
+        </profile>
+        <profile>
+            <id>jp</id>
+            <properties>
+                <geo>jp</geo>
+                <GEO>JP</GEO>
+            </properties>
+        </profile>
+        <profile>
+            <id>fp</id>
+            <properties>
+                <local>fp</local>
+                <LOCAL>FP</LOCAL>
+                <remote>sp</remote>
+                <REMOTE>SP</REMOTE>
+            </properties>
+        </profile>
+        <profile>
+            <id>sp</id>
+            <properties>
+                <local>sp</local>
+                <LOCAL>SP</LOCAL>
+                <remote>fp</remote>
+                <REMOTE>FP</REMOTE>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-openspaces</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
+    </dependencies>
+
+	<build>
+	    <plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-assembly-plugin</artifactId>
+	        <version>3.1.0</version>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>xap-maven-plugin</artifactId>
+	        <version>${gs.version}</version>
+	      </plugin>
+	    </plugins>
+	</build>    
+
+</project>

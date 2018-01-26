@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-gateway="http://www.openspaces.org/schema/core/gateway"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.openspaces.org/schema/core/gateway http://www.openspaces.org/schema/12.1/core/gateway/openspaces-gateway.xsd">
+
+    <os-gateway:delegator
+            id="${local}-cart-delegator-${geo}"
+            local-gateway-name="${local}-cart-gw-${geo}"
+            start-embedded-lus="false"
+            gateway-lookups="${local}-cart-gatewaylookups-${geo}">
+        <os-gateway:delegations>
+            <os-gateway:delegation target="${remote}-cart-gw-${geo}"/>
+        </os-gateway:delegations>
+        <os-gateway:security username="prsnlzni" password="Ghtnre#4m" />
+    </os-gateway:delegator>
+
+    <os-gateway:sink
+            id="${local}-cart-sink-${geo}"
+            local-gateway-name="${local}-cart-gw-${geo}"
+            start-embedded-lus="false"
+            requires-bootstrap="false"
+            gateway-lookups="${local}-cart-gatewaylookups-${geo}"
+            local-space-url="jini://*/*/cart-xap-space-${geo}?locators=#{systemEnvironment['${LOCAL}_GATEWAY_HOST_${GEO}']}:#{systemEnvironment['UNICAST_DISCOVERY_PORT']}">
+        <os-gateway:sources>
+            <os-gateway:source name="${remote}-cart-gw-${geo}"/>
+        </os-gateway:sources>
+        <os-gateway:security username="prsnlzni" password="Ghtnre#4m" />
+    </os-gateway:sink>
+
+    <os-gateway:lookups id="${local}-cart-gatewaylookups-${geo}">
+        <os-gateway:lookup
+                gateway-name="${local}-cart-gw-${geo}"
+                host="#{systemEnvironment['${LOCAL}_GATEWAY_HOST_${GEO}']}"
+                discovery-port="#{systemEnvironment['UNICAST_DISCOVERY_PORT']}"
+        />
+        <os-gateway:lookup
+                gateway-name="${remote}-cart-gw-${geo}"
+                host="#{systemEnvironment['${REMOTE}_GATEWAY_HOST_${GEO}']}"
+                discovery-port="#{systemEnvironment['UNICAST_DISCOVERY_PORT']}"
+        />
+    </os-gateway:lookups>
+
+</beans>
